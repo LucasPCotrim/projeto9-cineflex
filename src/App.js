@@ -1,12 +1,12 @@
+import Header from './components/Header/Header';
+import HomePage from './components/HomePage/HomePage';
 
-function App() {
+export default function App() {
   return (
     <div className="App">
-      <p>
-        Projeto9-cineflex
-      </p>
+      <Header />
+      <HomePage />
     </div>
   );
 }
 
-export default App;
