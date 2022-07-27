@@ -1,0 +1,71 @@
+.sessions-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+  color: #293845;
+  margin: 41px 0 41px 0;
+}
+
+.sessions-browser {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 24px;
+  margin-bottom: 158px;
+}
+
+.session {
+  margin-bottom: 23px;
+  width: 100%;
+}
+
+.session > h2 {
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: 0.02em;
+  color: #293845;
+  margin-bottom: 22px;
+}
+
+.session > h1 {
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: #293845;
+  margin-bottom: 22px;
+}
+
+.times-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  gap: 8px;
+}
+
+.session-time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 83px;
+  height: 43px;
+  background-color: #E8833A;
+  border-radius: 3px;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+  cursor: pointer;
+}

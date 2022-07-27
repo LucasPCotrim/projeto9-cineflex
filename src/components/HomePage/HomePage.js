@@ -1,7 +1,7 @@
 import './style.css'
-import filmImage from './film_2067.png';
+import filmImage from '../../assets/img/film_2067.png';
 
-function HomePage(){
+export default function HomePage(){
   return (
     <div className='home-page'>
       <h1>
@@ -47,5 +47,3 @@ function FilmBrowser(){
     </div>
   );
 }
-
-export default HomePage
