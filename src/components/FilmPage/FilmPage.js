@@ -4,18 +4,16 @@ import filmImage from '../../assets/img/film_2067.png';
 
 export default function FilmPage(){
   return (
-    <>
-      <div className='film-page'>
-        <h1>
-          Selecione o horário
-        </h1>
-        <div className='sessions-browser'>
-          <Session />
-          <Session />
-          <Session />
-          <Session />
-          <Session />
-        </div>
+    <div className='film-page'>
+      <h1>
+        Selecione o horário
+      </h1>
+      <div className='sessions-browser'>
+        <Session />
+        <Session />
+        <Session />
+        <Session />
+        <Session />
       </div>
       <Footer>
         <div className='film-poster'>
@@ -23,10 +21,9 @@ export default function FilmPage(){
         </div>
         <div className='film-info'>
           <div className='film-title'>Enola Holmes</div>
-          {/* <div className='film-session-info'>Quinta-feira - 15:00</div> */}
         </div>
       </Footer>
-    </>
+    </div>
     
   );
 }
