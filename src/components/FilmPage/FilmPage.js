@@ -2,10 +2,10 @@ import './style.css'
 import Footer from '../Footer/Footer';
 import filmImage from '../../assets/img/film_2067.png';
 
-export default function SessionsPage(){
+export default function FilmPage(){
   return (
     <>
-      <div className='sessions-page'>
+      <div className='film-page'>
         <h1>
           Selecione o horário
         </h1>
