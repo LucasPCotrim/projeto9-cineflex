@@ -14,6 +14,7 @@ export default function SessionPage({setPurchaseInfo}){
 
   const [session, setSession] = useState({});
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedSeatsRoom, setSelectedSeatsRoom] = useState([]);
   const [invalidSeat, setinvalidSeat] = useState(undefined);
 
   const [userName, setUserName] = useState('');
@@ -33,7 +34,7 @@ export default function SessionPage({setPurchaseInfo}){
     if (invalidSeat !== undefined) return;
     // User attempted to select unavailable seat
     if (seatStatus === 'indisponivel'){
-      setinvalidSeat(index+1);
+      setinvalidSeat(index);
       setTimeout(() => {
         setinvalidSeat(undefined);
       }, 750);
@@ -43,11 +44,13 @@ export default function SessionPage({setPurchaseInfo}){
     // De-select seat
     else if (seatStatus === 'selecionado'){
       setSelectedSeats(selectedSeats.filter(s => s !== idSeat));
+      setSelectedSeatsRoom(selectedSeatsRoom.filter(s => s !== index));
       return;
     }
     // Select seat
     else if (seatStatus === 'disponivel'){
-      setSelectedSeats([...selectedSeats,idSeat]);
+      setSelectedSeats([...selectedSeats, idSeat]);
+      setSelectedSeatsRoom([...selectedSeatsRoom, index]);
       return;
     }
   }
@@ -69,7 +72,7 @@ export default function SessionPage({setPurchaseInfo}){
         sessionWeekDay: session.day.weekday,
         sessionDate: session.day.date,
         sessionTime: session.name,
-        seats: selectedSeats,
+        seats: selectedSeatsRoom,
         userName: userName,
         userCPF: userCPF
       })
@@ -137,7 +140,7 @@ function SeatsContainer({seats, selectedSeats, handleSeatClick}){
               <div
                 className={`seat ${seatStatus}`}
                 key={seat.id}
-                onClick={()=>handleSeatClick(seat.id, seatStatus, index)}
+                onClick={()=>handleSeatClick(seat.id, seatStatus, index+1)}
               >
                 {index+1}
               </div>
