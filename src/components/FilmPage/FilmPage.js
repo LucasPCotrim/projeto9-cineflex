@@ -43,15 +43,20 @@ export default function FilmPage(){
         }
       </div>
       <Footer>
-        <div className='film-poster'>
-          <img src={sessions.posterURL} alt={sessions.title}/>
-        </div>
-        <div className='film-info'>
-          <div className='film-title'>{sessions.title}</div>
-        </div>
+        {sessions.posterURL
+        ?
+        <>
+          <div className='film-poster'>
+            <img src={sessions.posterURL} alt={sessions.title}/>
+          </div>
+          <div className='film-info'>
+            <div className='film-title'>{sessions.title}</div>
+          </div>
+        </>
+        :
+          <></>}
       </Footer>
     </div>
-    
   );
 }
 

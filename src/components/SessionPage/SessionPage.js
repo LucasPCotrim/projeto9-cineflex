@@ -3,7 +3,7 @@ import { useParams, Link} from 'react-router-dom'
 import axios from 'axios';
 import './style.css'
 import Footer from '../Footer/Footer';
-import filmImage from '../../assets/img/film_2067.png';
+
 
 export default function SessionPage(){
 
@@ -42,20 +42,7 @@ export default function SessionPage(){
             <></>
         }
       </div>
-      <div className='legend'>
-        <div className='option'>
-          <div className='icon selecionado'></div>
-          Selecionado
-        </div>
-        <div className='option'>
-          <div className='icon disponivel'></div>
-          Disponível
-        </div>
-        <div className='option'>
-          <div className='icon indisponivel'></div>
-          Indisponível
-        </div>
-      </div>
+      <Legend />
       <form className='inputs-container'>
         <h2>Nome do Comprador:</h2>
         <input type="text" placeholder='Digite seu nome...'/>
@@ -79,6 +66,27 @@ export default function SessionPage(){
             <></>
         }
       </Footer>
+    </div>
+  );
+}
+
+
+
+function Legend(){
+  return (
+    <div className='legend'>
+      <div className='option'>
+        <div className='icon selecionado'></div>
+        Selecionado
+      </div>
+      <div className='option'>
+        <div className='icon disponivel'></div>
+        Disponível
+      </div>
+      <div className='option'>
+        <div className='icon indisponivel'></div>
+        Indisponível
+      </div>
     </div>
   );
 }
