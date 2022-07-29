@@ -20,6 +20,7 @@ export default function FilmPage(){
 		});
 	}, [idMovie]);
 
+  
   return (
     <div className='film-page'>
       <h1>
@@ -54,7 +55,8 @@ export default function FilmPage(){
           </div>
         </>
         :
-          <></>}
+          <></>
+        }
       </Footer>
     </div>
   );

@@ -8,17 +8,33 @@ import Footer from '../Footer/Footer';
 export default function SessionPage(){
 
   const {idSession} = useParams();
-  console.log('idSession = ',idSession);
+
   const [session, setSession] = useState({})
+  const [selectedSeats, setSelectedSeats] = useState([])
 
   useEffect(() => {
     const sessionsAPI = `https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSession}/seats`
 		const request = axios.get(sessionsAPI);
 		request.then(resposta => {
-      console.log(resposta.data)
 			setSession(resposta.data);
 		});
 	}, [idSession]);
+
+
+  const handleSeatClick = (idSeat, seatStatus)=>{
+    if (seatStatus === 'indisponivel'){
+      console.log('Assento indisponível!')
+      return;
+    }
+    else if (seatStatus === 'selecionado'){
+      setSelectedSeats(selectedSeats.filter(s => s !== idSeat))
+      return;
+    }
+    else if (seatStatus === 'disponivel'){
+      setSelectedSeats([...selectedSeats,idSeat])
+      return;
+    }
+  }
 
 
   return (
@@ -29,13 +45,21 @@ export default function SessionPage(){
       <div className='seats-container'>
         {session.seats
           ? 
-            session.seats.map((seat, index)=>{
+            session.seats.map((seat, idSeat)=>{
+              let seatStatus;
+              if (!seat.isAvailable){
+                seatStatus = 'indisponivel'
+              } else{
+                seatStatus = selectedSeats.includes(idSeat) ? 'selecionado' : 'disponivel'
+              }
               return (
-                seat.isAvailable
-                  ?
-                    <div className='seat disponivel'>{index}</div>
-                  : 
-                    <div className='seat indisponivel'>{index}</div>
+                <div
+                  className={`seat ${seatStatus}`}
+                  key={idSeat}
+                  onClick={()=>handleSeatClick(idSeat, seatStatus)}
+                >
+                  {idSeat}
+                </div>
               );
             })
           :
