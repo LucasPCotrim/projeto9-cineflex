@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link} from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import './style.css'
 import Footer from '../Footer/Footer';
@@ -7,9 +7,10 @@ import Footer from '../Footer/Footer';
 const bookSeatsAPI = 'https://mock-api.driven.com.br/api/v7/cineflex/seats/book-many'
 
 
-export default function SessionPage(){
+export default function SessionPage({setPurchaseInfo}){
 
   const {idSession} = useParams();
+  const navigate = useNavigate();
 
   const [session, setSession] = useState({});
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -54,7 +55,6 @@ export default function SessionPage(){
 
   const handleForm = (event)=>{
     event.preventDefault();
-    console.log({selectedSeats, userName, userCPF});
     const request = axios.post(bookSeatsAPI,
       {
         ids: selectedSeats,
@@ -62,8 +62,18 @@ export default function SessionPage(){
         cpf: userCPF
       }
     )
-    request.then(resposta => {
-			console.log(resposta);
+    request.then(() => {
+      setPurchaseInfo(
+      {
+        movieTitle: session.movie.title,
+        sessionWeekDay: session.day.weekday,
+        sessionDate: session.day.date,
+        sessionTime: session.name,
+        seats: selectedSeats,
+        userName: userName,
+        userCPF: userCPF
+      })
+      navigate('/sucesso')
 		})
   }
 
