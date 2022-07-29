@@ -21,6 +21,5 @@ export default function SuccessPage() {
       </div>
       <button>Voltar para Home</button>
     </div>
-    
   )
 }

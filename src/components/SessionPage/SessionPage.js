@@ -3,6 +3,8 @@ import Footer from '../Footer/Footer';
 import filmImage from '../../assets/img/film_2067.png';
 
 export default function SessionPage(){
+
+
   return (
     <div className='session-page'>
       <h1>

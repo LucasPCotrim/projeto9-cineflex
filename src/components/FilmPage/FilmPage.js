@@ -1,26 +1,58 @@
+import { useState, useEffect } from 'react';
+import { useParams, Link} from 'react-router-dom'
+import axios from 'axios';
 import './style.css'
 import Footer from '../Footer/Footer';
-import filmImage from '../../assets/img/film_2067.png';
+
+
+
 
 export default function FilmPage(){
+
+  const {idMovie} = useParams();
+
+  const [sessions, setSessions] = useState({})
+
+  useEffect(() => {
+    const sessionsAPI = `https://mock-api.driven.com.br/api/v7/cineflex/movies/${idMovie}/showtimes`
+		const request = axios.get(sessionsAPI);
+		request.then(resposta => {
+      console.log(resposta.data);
+			setSessions(resposta.data);
+		});
+	}, [idMovie]);
+
+  console.log('sessions = ', sessions)
+
+  let sessionsJSX = <></>
+  if (sessions.days){
+    sessionsJSX = sessions.days.map((session)=>{
+      return (
+        <Session
+          weekday={session.weekday}
+          date={session.date}
+          showtimes={session.showtimes}
+          id={session.id}
+          key={session.id}
+        />
+      );
+    })
+  }
+
   return (
     <div className='film-page'>
       <h1>
         Selecione o horário
       </h1>
       <div className='sessions-browser'>
-        <Session />
-        <Session />
-        <Session />
-        <Session />
-        <Session />
+        {sessionsJSX}
       </div>
       <Footer>
         <div className='film-poster'>
-          <img src={filmImage} alt="film poster"/>
+          <img src={sessions.posterURL} alt={sessions.title}/>
         </div>
         <div className='film-info'>
-          <div className='film-title'>Enola Holmes</div>
+          <div className='film-title'>{sessions.title}</div>
         </div>
       </Footer>
     </div>
@@ -29,13 +61,18 @@ export default function FilmPage(){
 }
 
 
-function Session(){
+function Session({weekday, date, showtimes, id}){
   return (
     <div className='session'>
-      <h2>Quinta-feira - 24/06/2021</h2>
+      <h2>{`${weekday} - ${date}`}</h2>
       <div className='times-container'>
-        <div className='session-time'>15:00</div>
-        <div className='session-time'>19:00</div>
+        {showtimes.map((time)=>{
+          return (
+            <Link to={`/assentos/${id}`} key={time.id}>
+              <div className='session-time'>{time.name}</div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
