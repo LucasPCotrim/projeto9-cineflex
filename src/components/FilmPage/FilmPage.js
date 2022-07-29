@@ -10,7 +10,6 @@ import Footer from '../Footer/Footer';
 export default function FilmPage(){
 
   const {idMovie} = useParams();
-
   const [sessions, setSessions] = useState({})
 
   useEffect(() => {
@@ -32,7 +31,6 @@ export default function FilmPage(){
           weekday={session.weekday}
           date={session.date}
           showtimes={session.showtimes}
-          id={session.id}
           key={session.id}
         />
       );
@@ -61,14 +59,14 @@ export default function FilmPage(){
 }
 
 
-function Session({weekday, date, showtimes, id}){
+function Session({weekday, date, showtimes}){
   return (
     <div className='session'>
       <h2>{`${weekday} - ${date}`}</h2>
       <div className='times-container'>
         {showtimes.map((time)=>{
           return (
-            <Link to={`/assentos/${id}`} key={time.id}>
+            <Link to={`/assentos/${time.id}`} key={time.id}>
               <div className='session-time'>{time.name}</div>
             </Link>
           );
