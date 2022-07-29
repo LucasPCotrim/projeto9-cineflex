@@ -4,14 +4,19 @@ import axios from 'axios';
 import './style.css'
 import Footer from '../Footer/Footer';
 
+const bookSeatsAPI = 'https://mock-api.driven.com.br/api/v7/cineflex/seats/book-many'
+
 
 export default function SessionPage(){
 
   const {idSession} = useParams();
 
-  const [session, setSession] = useState({})
-  const [selectedSeats, setSelectedSeats] = useState([])
-  const [invalidSeat, setinvalidSeat] = useState(undefined)
+  const [session, setSession] = useState({});
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [invalidSeat, setinvalidSeat] = useState(undefined);
+
+  const [userName, setUserName] = useState('');
+  const [userCPF, setUserCPF] = useState('');
 
   useEffect(() => {
     const sessionsAPI = `https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSession}/seats`
@@ -22,24 +27,44 @@ export default function SessionPage(){
 	}, [idSession]);
 
 
-  const handleSeatClick = (idSeat, seatStatus)=>{
+  const handleSeatClick = (idSeat, seatStatus, index)=>{
+    // Prevent user from selecting a seat when popup message is on display
     if (invalidSeat !== undefined) return;
+    // User attempted to select unavailable seat
     if (seatStatus === 'indisponivel'){
-      setinvalidSeat(idSeat);
+      setinvalidSeat(index+1);
       setTimeout(() => {
         setinvalidSeat(undefined);
-      }, 1000);
+      }, 750);
       console.log('Assento indisponível!');
       return;
     }
+    // De-select seat
     else if (seatStatus === 'selecionado'){
       setSelectedSeats(selectedSeats.filter(s => s !== idSeat));
       return;
     }
+    // Select seat
     else if (seatStatus === 'disponivel'){
       setSelectedSeats([...selectedSeats,idSeat]);
       return;
     }
+  }
+
+
+  const handleForm = (event)=>{
+    event.preventDefault();
+    console.log({selectedSeats, userName, userCPF});
+    const request = axios.post(bookSeatsAPI,
+      {
+        ids: selectedSeats,
+        name: userName,
+        cpf: userCPF
+      }
+    )
+    request.then(resposta => {
+			console.log(resposta);
+		})
   }
 
 
@@ -49,37 +74,18 @@ export default function SessionPage(){
         Selecione o(s) assento(s)
       </h1>
       <InvalidSeatPopup invalidSeat={invalidSeat} />
-      <div className='seats-container'>
-        {session.seats
-          ? 
-            session.seats.map((seat, idSeat)=>{
-              let seatStatus;
-              if (!seat.isAvailable){
-                seatStatus = 'indisponivel'
-              } else{
-                seatStatus = selectedSeats.includes(idSeat+1) ? 'selecionado' : 'disponivel'
-              }
-              return (
-                <div
-                  className={`seat ${seatStatus}`}
-                  key={idSeat+1}
-                  onClick={()=>handleSeatClick(idSeat+1, seatStatus)}
-                >
-                  {idSeat+1}
-                </div>
-              );
-            })
-          :
-            <></>
-        }
-      </div>
+      <SeatsContainer
+        seats={session.seats}
+        selectedSeats={selectedSeats}
+        handleSeatClick={handleSeatClick}
+      />
       <Legend />
-      <form className='inputs-container'>
+      <form className='inputs-container' onSubmit={handleForm}>
         <h2>Nome do Comprador:</h2>
-        <input type="text" placeholder='Digite seu nome...'/>
+        <input type="text" placeholder='Digite seu nome...' value={userName} onChange={e => setUserName(e.target.value)} required/>
         <h2>CPF do Comprador:</h2>
-        <input type="text" placeholder='Digite seu CPF...'/>
-        <button>Reservar assento(s)</button>
+        <input type="text" placeholder='Digite seu CPF...' value={userCPF} onChange={e => setUserCPF(e.target.value)} required/>
+        <button type="submit">Reservar assento(s)</button>
       </form>
       <Footer>
         {session.movie
@@ -102,6 +108,37 @@ export default function SessionPage(){
 }
 
 
+
+// Auxiliary Components
+//------------------------
+function SeatsContainer({seats, selectedSeats, handleSeatClick}){
+  return (
+    <div className='seats-container'>
+      {seats
+        ? 
+          seats.map((seat, index)=>{
+            let seatStatus;
+            if (!seat.isAvailable){
+              seatStatus = 'indisponivel'
+            } else{
+              seatStatus = selectedSeats.includes(seat.id) ? 'selecionado' : 'disponivel'
+            }
+            return (
+              <div
+                className={`seat ${seatStatus}`}
+                key={seat.id}
+                onClick={()=>handleSeatClick(seat.id, seatStatus, index)}
+              >
+                {index+1}
+              </div>
+            );
+          })
+        :
+          <></>
+      }
+    </div>
+  );
+}
 
 function Legend(){
   return (

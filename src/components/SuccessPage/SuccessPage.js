@@ -14,7 +14,7 @@ export default function SuccessPage() {
         <p>Assento 15</p>
         <p>Assento 16</p>
       </div>
-      <div className='buyer'>
+      <div className='client'>
         <h2>Comprador</h2>
         <p>Nome: João da Silva Sauro</p>
         <p>CPF: 123.456.789-10</p>
