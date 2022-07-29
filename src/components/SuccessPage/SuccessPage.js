@@ -1,10 +1,17 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import './style.css'
 
 
 export default function SuccessPage({purchaseInfo, setPurchaseInfo}) {
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
 
   const handleGoBackHome = ()=>{
     setPurchaseInfo({});

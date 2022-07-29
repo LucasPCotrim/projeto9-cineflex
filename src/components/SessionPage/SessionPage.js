@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios';
 import './style.css'
 import Footer from '../Footer/Footer';
@@ -11,6 +11,7 @@ export default function SessionPage({setPurchaseInfo}){
 
   const {idSession} = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [session, setSession] = useState({});
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -19,6 +20,10 @@ export default function SessionPage({setPurchaseInfo}){
 
   const [userName, setUserName] = useState('');
   const [userCPF, setUserCPF] = useState('');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   useEffect(() => {
     const sessionsAPI = `https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSession}/seats`
