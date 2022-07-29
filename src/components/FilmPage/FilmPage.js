@@ -16,26 +16,9 @@ export default function FilmPage(){
     const sessionsAPI = `https://mock-api.driven.com.br/api/v7/cineflex/movies/${idMovie}/showtimes`
 		const request = axios.get(sessionsAPI);
 		request.then(resposta => {
-      console.log(resposta.data);
 			setSessions(resposta.data);
 		});
 	}, [idMovie]);
-
-  console.log('sessions = ', sessions)
-
-  let sessionsJSX = <></>
-  if (sessions.days){
-    sessionsJSX = sessions.days.map((session)=>{
-      return (
-        <Session
-          weekday={session.weekday}
-          date={session.date}
-          showtimes={session.showtimes}
-          key={session.id}
-        />
-      );
-    })
-  }
 
   return (
     <div className='film-page'>
@@ -43,7 +26,21 @@ export default function FilmPage(){
         Selecione o horário
       </h1>
       <div className='sessions-browser'>
-        {sessionsJSX}
+        {sessions.days
+         ? 
+          sessions.days.map((session)=>{
+            return (
+              <Session
+                weekday={session.weekday}
+                date={session.date}
+                showtimes={session.showtimes}
+                key={session.id}
+              />
+            );
+          }) 
+         :
+          <></>
+        }
       </div>
       <Footer>
         <div className='film-poster'>
