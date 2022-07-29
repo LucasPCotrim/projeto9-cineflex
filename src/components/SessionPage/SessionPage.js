@@ -11,6 +11,7 @@ export default function SessionPage(){
 
   const [session, setSession] = useState({})
   const [selectedSeats, setSelectedSeats] = useState([])
+  const [invalidSeat, setinvalidSeat] = useState(undefined)
 
   useEffect(() => {
     const sessionsAPI = `https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSession}/seats`
@@ -22,16 +23,21 @@ export default function SessionPage(){
 
 
   const handleSeatClick = (idSeat, seatStatus)=>{
+    if (invalidSeat !== undefined) return;
     if (seatStatus === 'indisponivel'){
-      console.log('Assento indisponível!')
+      setinvalidSeat(idSeat);
+      setTimeout(() => {
+        setinvalidSeat(undefined);
+      }, 1000);
+      console.log('Assento indisponível!');
       return;
     }
     else if (seatStatus === 'selecionado'){
-      setSelectedSeats(selectedSeats.filter(s => s !== idSeat))
+      setSelectedSeats(selectedSeats.filter(s => s !== idSeat));
       return;
     }
     else if (seatStatus === 'disponivel'){
-      setSelectedSeats([...selectedSeats,idSeat])
+      setSelectedSeats([...selectedSeats,idSeat]);
       return;
     }
   }
@@ -42,6 +48,7 @@ export default function SessionPage(){
       <h1>
         Selecione o(s) assento(s)
       </h1>
+      <InvalidSeatPopup invalidSeat={invalidSeat} />
       <div className='seats-container'>
         {session.seats
           ? 
@@ -50,15 +57,15 @@ export default function SessionPage(){
               if (!seat.isAvailable){
                 seatStatus = 'indisponivel'
               } else{
-                seatStatus = selectedSeats.includes(idSeat) ? 'selecionado' : 'disponivel'
+                seatStatus = selectedSeats.includes(idSeat+1) ? 'selecionado' : 'disponivel'
               }
               return (
                 <div
                   className={`seat ${seatStatus}`}
-                  key={idSeat}
-                  onClick={()=>handleSeatClick(idSeat, seatStatus)}
+                  key={idSeat+1}
+                  onClick={()=>handleSeatClick(idSeat+1, seatStatus)}
                 >
-                  {idSeat}
+                  {idSeat+1}
                 </div>
               );
             })
@@ -112,5 +119,13 @@ function Legend(){
         Indisponível
       </div>
     </div>
+  );
+}
+
+function InvalidSeatPopup({invalidSeat}){
+  return (
+    (invalidSeat!==undefined)
+      ? <div className='invalid-seat-popup'>{`Assento ${invalidSeat} Indisponível`}</div>
+      : <></>
   );
 }
