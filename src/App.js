@@ -37,6 +37,7 @@ export default function App() {
           element={
             <SuccessPage
               purchaseInfo={purchaseInfo}
+              setPurchaseInfo={setPurchaseInfo}
             />
           }
         />

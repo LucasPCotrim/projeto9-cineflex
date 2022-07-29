@@ -1,7 +1,17 @@
+import { useNavigate } from 'react-router-dom'
 import './style.css'
 
 
-export default function SuccessPage({purchaseInfo}) {
+export default function SuccessPage({purchaseInfo, setPurchaseInfo}) {
+
+  const navigate = useNavigate();
+
+  const handleGoBackHome = ()=>{
+    setPurchaseInfo({});
+    navigate('/');
+  }
+
+
   return (
     (purchaseInfo.movieTitle)
     ?
@@ -23,7 +33,7 @@ export default function SuccessPage({purchaseInfo}) {
         <p>{`Nome: ${purchaseInfo.userName}`}</p>
         <p>{`CPF: ${purchaseInfo.userCPF}`}</p>
       </div>
-      <button>Voltar para Home</button>
+      <button onClick={handleGoBackHome}>Voltar para Home</button>
     </div>
     :
       <></>
